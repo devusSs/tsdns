@@ -34,7 +34,7 @@ func checkService(service string) error {
 
 func checkProto(proto string) error {
 	if proto == "" {
-		return errEmptyProto
+		return nil
 	}
 
 	switch proto {
