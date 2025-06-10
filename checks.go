@@ -8,7 +8,6 @@ var (
 	errNilContext   = errors.New("context cannot be nil")
 	errEmptyHost    = errors.New("host cannot be empty")
 	errEmptyService = errors.New("service cannot be empty")
-	errEmptyProto   = errors.New("protocol cannot be empty")
 )
 
 func checkHost(host string) error {
