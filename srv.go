@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"net"
 )
 
@@ -17,6 +18,10 @@ func lookupTS3SRV(ctx context.Context, host string, proto string) ([]*net.SRV, e
 
 	if host == "" {
 		return nil, errEmptyHost
+	}
+
+	if proto == "tcp" {
+		return nil, errors.New("srv lookup for ts3 over tcp is not supported")
 	}
 
 	return lookupSRV(ctx, ts3SRVService, proto, host)
