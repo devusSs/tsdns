@@ -5,11 +5,12 @@ import (
 	"net"
 )
 
-const ts3SRVService = "ts3"
+const (
+	ts3SRVService = "ts3"
+	ts3SRVProto   = "udp"
+)
 
-var ts3SRVProto = "udp"
-
-func lookupTS3SRV(ctx context.Context, host string) ([]*net.SRV, error) {
+func lookupTS3SRV(ctx context.Context, host string, proto string) ([]*net.SRV, error) {
 	if ctx == nil {
 		return nil, errNilContext
 	}
@@ -18,14 +19,15 @@ func lookupTS3SRV(ctx context.Context, host string) ([]*net.SRV, error) {
 		return nil, errEmptyHost
 	}
 
-	return lookupSRV(ctx, ts3SRVService, ts3SRVProto, host)
+	return lookupSRV(ctx, ts3SRVService, proto, host)
 }
 
-const tsDNSSRVService = "tsdns"
+const (
+	tsDNSSRVService = "tsdns"
+	tsDNSSRVProto   = "tcp"
+)
 
-var tsDNSSRVProto = "tcp"
-
-func lookupTSDNSSRV(ctx context.Context, host string) ([]*net.SRV, error) {
+func lookupTSDNSSRV(ctx context.Context, host string, proto string) ([]*net.SRV, error) {
 	if ctx == nil {
 		return nil, errNilContext
 	}
@@ -34,7 +36,7 @@ func lookupTSDNSSRV(ctx context.Context, host string) ([]*net.SRV, error) {
 		return nil, errEmptyHost
 	}
 
-	return lookupSRV(ctx, tsDNSSRVService, tsDNSSRVProto, host)
+	return lookupSRV(ctx, tsDNSSRVService, proto, host)
 }
 
 func lookupSRV(ctx context.Context, service string, proto string, host string) ([]*net.SRV, error) {

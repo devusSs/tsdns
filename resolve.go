@@ -44,6 +44,7 @@ func resolve(host, service, proto string) error {
 	case "ts3":
 		if proto == "" {
 			proto = ts3SRVProto
+			slog.Debug("using default protocol for ts3 srv lookup", slog.String("protocol", proto))
 		}
 
 		slog.Info("ts3 srv lookup started",
@@ -51,7 +52,7 @@ func resolve(host, service, proto string) error {
 			slog.String("service", service),
 			slog.String("protocol", proto))
 
-		addrs, err := lookupTS3SRV(ctx, host)
+		addrs, err := lookupTS3SRV(ctx, host, proto)
 		if err != nil {
 			return fmt.Errorf("ts3 srv lookup failed: %w", err)
 		}
@@ -79,6 +80,7 @@ func resolve(host, service, proto string) error {
 	case "tsdns":
 		if proto == "" {
 			proto = tsDNSSRVProto
+			slog.Debug("using default protocol for tsdns srv lookup", slog.String("protocol", proto))
 		}
 
 		slog.Info("tsdns srv lookup started",
@@ -86,7 +88,7 @@ func resolve(host, service, proto string) error {
 			slog.String("service", service),
 			slog.String("protocol", proto))
 
-		addrs, err := lookupTSDNSSRV(ctx, host)
+		addrs, err := lookupTSDNSSRV(ctx, host, proto)
 		if err != nil {
 			return fmt.Errorf("tsdns srv lookup failed: %w", err)
 		}
@@ -112,14 +114,15 @@ func resolve(host, service, proto string) error {
 		return nil
 
 	case "nick":
-		if proto != "" {
+		if proto == "" {
 			proto = ts3SRVProto
+			slog.Debug("using default protocol for nick srv lookup", slog.String("protocol", proto))
 		}
 
 		slog.Info("nick lookup started",
 			slog.String("nick", host),
 			slog.String("service", service),
-			slog.String("protocol", proto))
+		)
 
 		addr, err := lookupNick(ctx, host)
 		if err != nil {
@@ -135,7 +138,7 @@ func resolve(host, service, proto string) error {
 			slog.String("address", addr),
 		)
 
-		addrs, err := lookupTS3SRV(ctx, addr)
+		addrs, err := lookupTS3SRV(ctx, addr, proto)
 		if err != nil {
 			return fmt.Errorf("ts3 srv lookup for nick failed: %w", err)
 		}
